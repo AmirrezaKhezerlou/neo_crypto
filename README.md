@@ -12,6 +12,10 @@ A Flutter app designed to display real-time cryptocurrency prices. The app fetch
 - **Dart**: The programming language used for app development.
 - **API**: Fetches data from the [currency.prices.free](https://github.com/babakcode/currency.prices.free) web service.
 
+  
+## Special Thanks
+Big, BIG thanks to [babakcode](https://github.com/babakcode/currency.prices.free) for creating and sharing this amazing API. Seriously, you’re a legend! 🙏💥 Thanks for making this project possible – you're awesome! 🌟
+
 ## Getting Started
 
 To get the project up and running on your local machine:
