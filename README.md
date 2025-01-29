@@ -3,7 +3,7 @@
 A Flutter app designed to display real-time cryptocurrency prices. The app fetches the latest data from a public API provided by [babakcode](https://github.com/babakcode/currency.prices.free). The data is updated live, giving users an up-to-date view of the cryptocurrency market.
 ## App Screenshot
 Here’s a preview of the app:
-![Crypto App Screenshot](https://raw.githubusercontent.com/AmirrezaKhezerlou/neo_crypto/refs/heads/main/shot1.png)
+![Crypto NeoCrypto App Screenshot](https://raw.githubusercontent.com/AmirrezaKhezerlou/neo_crypto/refs/heads/main/shot2.png)
 
 ## Features
 - **Real-time updates**: Get the latest prices of cryptocurrencies as they change.
