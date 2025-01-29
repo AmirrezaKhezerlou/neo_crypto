@@ -20,14 +20,7 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   DashboardController controller = Get.put(DashboardController());
-  Duration countdownDuration = const Duration(seconds: 10);
   bool _isMenuOpen = false;
-
-  void resetCountdown() {
-    setState(() {
-      countdownDuration = const Duration(seconds: 10);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +45,11 @@ class _DashboardPageState extends State<DashboardPage> {
             },
             child: Container(
               padding: EdgeInsets.all(padding),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/background.png'),
-                    fit: BoxFit.fill),
+                  image: const AssetImage('assets/background.png'),
+                  fit: isDesktop ? BoxFit.fill : BoxFit.cover, // بهینه‌شده برای موبایل
+                ),
               ),
               child: SafeArea(
                 child: Column(
@@ -63,7 +57,6 @@ class _DashboardPageState extends State<DashboardPage> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Row(
@@ -79,52 +72,39 @@ class _DashboardPageState extends State<DashboardPage> {
                                   });
                                 },
                               ),
-                              if (screenSize.width > 400) ...[
-                                const SizedBox(width: 15),
-                                Column(
-                                  children: [
-                                    const Text(
-                                      'Next update in:',
-                                      style: TextStyle(
-                                          fontSize: 8, color: Colors.white),
-                                    ),
-                                    AnimatedCountdownTimer(
-                                      duration: const Duration(
-                                          minutes: 1, seconds: 30),
-                                      controller: controller,
-                                      widgetSize: 0.3,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                              const SizedBox(width: 15),
+                              Column(
+                                children: [
+                                  const Text(
+                                    'Next update in:',
+                                    style: TextStyle(fontSize: 8, color: Colors.white),
+                                  ),
+                                  AnimatedCountdownTimer(
+                                    duration: const Duration(minutes: 1, seconds: 30),
+                                    controller: controller,
+                                    widgetSize: 0.3,
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                        if (isDesktop)
+
                           Row(
                             children: [
+                              if (isDesktop)
                               IconButton(
                                 onPressed: () async {
                                   await WindowManager.instance.minimize();
                                 },
-                                icon: const Icon(
-                                  Icons.minimize,
-                                  color: Colors.white,
-                                  size: 20,
-                                  semanticLabel: 'Minimize',
-                                ),
+                                icon: const Icon(Icons.minimize, color: Colors.white, size: 20),
                               ),
                               const SizedBox(width: 15),
                               IconButton(
                                 onPressed: () {
                                   controller.showExitDialog(context);
                                 },
-                                icon: const Icon(
-                                  Icons.close,
-                                  color: Colors.white,
-                                  size: 20,
-                                  semanticLabel: 'Exit',
-                                ),
+                                icon: const Icon(Icons.close, color: Colors.white, size: 20),
                               ),
                             ],
                           ),
@@ -132,7 +112,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     Expanded(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.start, // تنظیم محتوا به بالای صفحه
                         children: [
                           Text(
                             'Neo Crypto',
@@ -151,37 +131,30 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                           ),
                           SizedBox(
-                            height: cryptoCardHeight,
-                            child: Obx(
-                                  () => !controller.isConnecting.value
-                                  ? CryptoCardsRow(
-                                  cryptoList: controller.cryptoList)
-                                  : Center(
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: Image.asset(
-                                    'assets/logo.png',
+                            height: isDesktop?cryptoCardHeight:cryptoCardHeight*2,
+                            child: Center(
+                              child: Obx(
+                                    () => !controller.isConnecting.value
+                                    ? CryptoCardsRow(cryptoList: controller.cryptoList)
+                                    : Center(
+                                  child: SizedBox(
                                     width: 40,
                                     height: 40,
-                                    fit: BoxFit.fill,
-                                  )
-                                      .animate(
-                                      onPlay: (controller) =>
-                                          controller.repeat())
-                                      .rotate(
-                                      duration:
-                                      const Duration(seconds: 1),
-                                      delay: const Duration(
-                                          milliseconds: 500)),
+                                    child: Image.asset(
+                                      'assets/logo.png',
+                                      fit: BoxFit.fill,
+                                    ).animate(onPlay: (controller) => controller.repeat()).rotate(
+                                      duration: const Duration(seconds: 1),
+                                      delay: const Duration(milliseconds: 500),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           GestureDetector(
                             onTap: () => Get.to(
-                                  () => FullCryptoPage(
-                                  cryptoList: controller.cryptoList),
+                                  () => FullCryptoPage(cryptoList: controller.cryptoList),
                               transition: Transition.rightToLeft,
                             ),
                             child: Row(
@@ -191,28 +164,22 @@ class _DashboardPageState extends State<DashboardPage> {
                                   'Tap here to see all cryptocurrencies',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize:
-                                    screenSize.width > 600 ? 22.0 : 16.0,
+                                    fontSize: screenSize.width > 600 ? 22.0 : 16.0,
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.white,
-                                  size: 20,
-                                )
+                                const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20)
                               ],
                             ),
                           ),
+                          const Spacer(), // اضافه کردن Spacer برای چسباندن BottomSection به پایین
                           const BottomSection()
-                              .animate(
-                              onPlay: (controller) => controller.repeat())
-                              .shimmer(
-                              duration: const Duration(seconds: 1),
-                              delay: const Duration(milliseconds: 500)),
+                              .animate(onPlay: (controller) => controller.repeat())
+                              .shimmer(duration: const Duration(seconds: 1), delay: const Duration(milliseconds: 500)),
                         ],
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -225,14 +192,11 @@ class _DashboardPageState extends State<DashboardPage> {
             top: 0,
             bottom: 0,
             child: Container(
+              width: screenSize.width * 0.6,
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                ),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
                 color: Colors.white,
               ),
-              width: screenSize.width * 0.6,
               child: Column(
                 children: [
                   const Padding(
@@ -242,8 +206,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   Expanded(
                     child: GridView.builder(
                       padding: EdgeInsets.all(padding),
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
@@ -252,58 +215,34 @@ class _DashboardPageState extends State<DashboardPage> {
                       itemBuilder: (context, index) {
                         String key = controller.data.keys.elementAt(index);
                         String value = controller.data[key]!;
-                        return AnimatedOpacity(
-                          opacity: _isMenuOpen ? 1 : 0,
-                          duration: const Duration(milliseconds: 500),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (index == 0) {
-                                launchUrl(Uri.parse(
-                                    'https://github.com/babakcode/currency.prices.free'));
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xff3935FF),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    value,
-                                    width: 30,
-                                    height: 30,
-                                    color: Colors.white,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    key,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                        return GestureDetector(
+                          onTap: () {
+                            if (index == 0) {
+                              launchUrl(Uri.parse('https://github.com/babakcode/currency.prices.free'));
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff3935FF),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(value, width: 30, height: 30, color: Colors.white),
+                                const SizedBox(height: 10),
+                                Text(key, style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold)),
+                              ],
                             ),
                           ),
-                        ).animate(
-                            onPlay: (controller) => controller.repeat())
-                            .shimmer(
-                            duration: const Duration(seconds: 1),
-                            delay: const Duration(milliseconds: 500));
+                        ).animate(onPlay: (controller) => controller.repeat()).shimmer(duration: const Duration(seconds: 1));
                       },
                     ),
                   ),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Version 1.0.0',
-                      style: TextStyle(color: Colors.grey),
-                    ),
+                    child: Text('Version 1.0.0', style: TextStyle(color: Colors.grey)),
                   ),
                 ],
               ),
