@@ -1,32 +1,37 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neo_crypto/dashboard/view/dashboard.dart';
 import 'package:toastification/toastification.dart';
 import 'package:window_manager/window_manager.dart';
-
+bool get isMobile => Platform.isAndroid || Platform.isIOS;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
-  WindowOptions windowOptions = WindowOptions(
-    size: const Size(800, 500),
-    backgroundColor: Colors.transparent,
-    titleBarStyle: TitleBarStyle.hidden,
+  if(!isMobile){
+    await windowManager.ensureInitialized();
+    WindowOptions windowOptions = WindowOptions(
+      size: const Size(800, 500),
+      backgroundColor: Colors.transparent,
+      titleBarStyle: TitleBarStyle.hidden,
 
-  );
+    );
 
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
 
-    await windowManager.setSize(Size(
-      800,
-      500,
-    ));
-    await windowManager.setMinimumSize(Size(800, 500));
-    await windowManager.setMaximumSize(Size(800, 500));
-    await windowManager.center();
-    await windowManager.show();
-    await windowManager.focus();
-  });
+      await windowManager.setSize(Size(
+        800,
+        500,
+      ));
+      await windowManager.setMinimumSize(Size(800, 500));
+      await windowManager.setMaximumSize(Size(800, 500));
+      await windowManager.center();
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
+
   runApp(const MyApp());
 }
 

@@ -29,6 +29,14 @@ class BottomSection extends StatelessWidget {
                     launchUrl(Uri.parse('https://github.com/babakcode'));
                   },
                 ),
+                TextSpan(text: ', logo designed by '),
+                TextSpan(
+                  text: 'Alef_His',
+                  style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                  recognizer: TapGestureRecognizer()..onTap = () {
+                    launchUrl(Uri.parse('https://t.me/Alef_His'));
+                  },
+                ),
               ],
             ),
           ),

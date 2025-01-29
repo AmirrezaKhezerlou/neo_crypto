@@ -15,6 +15,7 @@ class _FullCryptoPageState extends State<FullCryptoPage> with TickerProviderStat
   late List<AnimationController> _controllers;
   late List<Animation<double>> _animations;
   late ScrollController _scrollController;
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -34,7 +35,6 @@ class _FullCryptoPageState extends State<FullCryptoPage> with TickerProviderStat
       );
     }).toList();
 
-    // Staggered animation start
     Future.delayed(const Duration(milliseconds: 100), () {
       for (var i = 0; i < _controllers.length; i++) {
         Future.delayed(Duration(milliseconds: i * 150), () {
@@ -56,10 +56,9 @@ class _FullCryptoPageState extends State<FullCryptoPage> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3935FF),
-
+      backgroundColor: const Color(0xff3935FF),
       appBar: AppBar(
-        backgroundColor: Color(0xff3935FF),
+        backgroundColor: const Color(0xff3935FF),
         elevation: 0,
         title: const Text(
           'All Cryptocurrencies',
@@ -70,113 +69,132 @@ class _FullCryptoPageState extends State<FullCryptoPage> with TickerProviderStat
           ),
         ),
         centerTitle: true,
-        iconTheme: IconThemeData(
-          color: Colors.white, // تغییر رنگ فلش برگشت به سفید
+        iconTheme: const IconThemeData(
+          color: Colors.white,
         ),
       ),
-
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/background.png'), fit: BoxFit.fill),
+            image: AssetImage('assets/background.png'),
+            fit: BoxFit.fill,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Scrollbar(
-            controller: _scrollController,
-            thumbVisibility: true,
-            interactive: true,
-            thickness: 8.0,
-            radius: const Radius.circular(4.0),
-            child: GridView.builder(
-              controller: _scrollController,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: widget.cryptoList.length,
-              itemBuilder: (context, index) {
-                final crypto = widget.cryptoList[index];
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0, 1.5),
-                    end: Offset.zero,
-                  ).animate(_animations[index]),
-                  child: FadeTransition(
-                    opacity: _animations[index],
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Logo
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 5,
-                                ),
-                              ],
-                            ),
-                            child:  ClipOval(
-                              child: CachedNetworkImage(
-                                imageUrl: crypto.logo,
-                                fit: BoxFit.cover,
-                                errorWidget: (context, error, stackTrace) =>
-                                const Icon(Icons.currency_bitcoin),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          // Symbol and Name
-                          Text(
-                            crypto.symbol,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            crypto.name,
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.8),
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          // Price
-                          Text(
-                            crypto.priceStr,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // تعیین تعداد ستون‌ها بر اساس عرض صفحه
+              int crossAxisCount;
+              if (constraints.maxWidth < 600) {
+                crossAxisCount = 2;
+              } else if (constraints.maxWidth < 900) {
+                crossAxisCount = 3;
+              } else {
+                crossAxisCount = 4;
+              }
+
+              return Scrollbar(
+                controller: _scrollController,
+                thumbVisibility: true,
+                interactive: true,
+                thickness: 8.0,
+                radius: const Radius.circular(4.0),
+                child: GridView.builder(
+                  controller: _scrollController,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    // تنظیم نسبت ارتفاع به عرض برای موبایل
+                    childAspectRatio: constraints.maxWidth < 600 ? 0.85 : 1,
                   ),
-                );
-              },
-            ),
+                  itemCount: widget.cryptoList.length,
+                  itemBuilder: (context, index) {
+                    final crypto = widget.cryptoList[index];
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 1.5),
+                        end: Offset.zero,
+                      ).animate(_animations[index]),
+                      child: FadeTransition(
+                        opacity: _animations[index],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: crypto.logo,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, error, stackTrace) =>
+                                    const Icon(Icons.currency_bitcoin),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                crypto.symbol,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                crypto.name,
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                  fontSize: 14,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                crypto.priceStr,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
           ),
         ),
       ),
