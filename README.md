@@ -17,7 +17,10 @@ Here’s a preview of the app:
 
   
 ## Special Thanks
-Big, BIG thanks to [babakcode](https://github.com/babakcode/currency.prices.free) for creating and sharing this amazing API. Seriously, you’re a legend! 🙏💥 Thanks for making this project possible – you're awesome! 🌟
+Big, BIG thanks to [babakcode](https://github.com/babakcode/currency.prices.free) for creating and sharing this amazing API. Seriously, you’re a legend! 🙏💥 Thanks for making this project possible – you're awesome! 🌟  
+
+Also, a huge shoutout to [Alef_His](https://t.me/Alef_His) for designing the logo. Your creativity is much appreciated! 🎨🔥
+
 
 ## Getting Started
 
