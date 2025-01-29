@@ -33,4 +33,4 @@ To get the project up and running on your local machine:
 ### Installation
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/crypto-price-tracker.git
+   git clone https://github.com/AmirrezaKhezerlou/neo_crypto.git
