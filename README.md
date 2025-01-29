@@ -3,11 +3,9 @@
 A Flutter app designed to display real-time cryptocurrency prices. The app fetches the latest data from a public API provided by [babakcode](https://github.com/babakcode/currency.prices.free). The data is updated live, giving users an up-to-date view of the cryptocurrency market.
 ## NeoCrypto - Windows & Android
 
-### Windows Version  
-![Windows Screenshot](https://raw.githubusercontent.com/AmirrezaKhezerlou/neo_crypto/refs/heads/main/shot2.png)
-
-### Android Version  
-![Android Screenshot](https://raw.githubusercontent.com/AmirrezaKhezerlou/neo_crypto/refs/heads/main/an_shot.jpg)
+| Windows Version | Android Version |
+|----------------|----------------|
+| <a href="https://raw.githubusercontent.com/AmirrezaKhezerlou/neo_crypto/refs/heads/main/shot2.png"><img src="https://raw.githubusercontent.com/AmirrezaKhezerlou/neo_crypto/refs/heads/main/shot2.png" width="300"></a> | <a href="https://raw.githubusercontent.com/AmirrezaKhezerlou/neo_crypto/refs/heads/main/an_shot.jpg"><img src="https://raw.githubusercontent.com/AmirrezaKhezerlou/neo_crypto/refs/heads/main/an_shot.jpg" width="300"></a> |
 
 
 ## Features
