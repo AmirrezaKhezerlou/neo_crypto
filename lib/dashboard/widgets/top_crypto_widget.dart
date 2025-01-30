@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart'; // برای استفاده از Platform
+import 'package:get/get.dart';
+import 'package:neo_crypto/coin_detail/view/coin_detail.dart';
 import '../../model/cryptoModel.dart';
 
 class CryptoCardsRow extends StatefulWidget {
@@ -154,81 +156,84 @@ class _CryptoCardsRowState extends State<CryptoCardsRow> with TickerProviderStat
                       // محدود کردن حداقل عرض کارت
                       cardWidth = cardWidth.clamp(120.0, 180.0);
                   final crypto = widget.cryptoList[index];
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      left: index == 0 ? 16 : 20,
-                      right: index == numberOfCards - 1 ? 16 : 0,
-                    ),
-                    child: SlideTransition(
-                      position: Tween<Offset>(begin: const Offset(1.5, 0), end: Offset.zero)
-                          .animate(_animations[index]),
-                      child: FadeTransition(
-                        opacity: _animations[index],
-                        child: Container(
-                          width: cardWidth-10,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.purple.withOpacity(0.3),
-                                blurRadius: 20,
-                                offset: const Offset(0, 8),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 5,
-                                    ),
-                                  ],
+                  return GestureDetector(
+                    onTap: ()=>Get.to(()=>CoinDetailPage(),arguments: crypto.symbol),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: index == 0 ? 16 : 20,
+                        right: index == numberOfCards - 1 ? 16 : 0,
+                      ),
+                      child: SlideTransition(
+                        position: Tween<Offset>(begin: const Offset(1.5, 0), end: Offset.zero)
+                            .animate(_animations[index]),
+                        child: FadeTransition(
+                          opacity: _animations[index],
+                          child: Container(
+                            width: cardWidth-10,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.purple.withOpacity(0.3),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 8),
                                 ),
-                                child: ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: crypto.logo,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, error, stackTrace) =>
-                                    const Icon(Icons.currency_bitcoin),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 5,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipOval(
+                                    child: CachedNetworkImage(
+                                      imageUrl: crypto.logo,
+                                      fit: BoxFit.cover,
+                                      errorWidget: (context, error, stackTrace) =>
+                                      const Icon(Icons.currency_bitcoin),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                crypto.symbol,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                                const SizedBox(height: 10),
+                                Text(
+                                  crypto.symbol,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                crypto.name,
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                  fontSize: 14,
+                                Text(
+                                  crypto.name,
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.8),
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                crypto.priceStr,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                const SizedBox(height: 8),
+                                Text(
+                                  crypto.priceStr,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
