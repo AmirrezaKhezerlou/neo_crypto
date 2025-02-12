@@ -2,18 +2,18 @@ class CryptoCoin {
   final String id;
   final String name;
   final String symbol;
-  final double currentPrice;
-  final double marketCap;
-  final double priceChange24h;
-  final double volume24h;
-  final double circulatingSupply;
+  final double? currentPrice;
+  final double? marketCap;
+  final double? priceChange24h;
+  final double? volume24h;
+  final double? circulatingSupply;
 
   // داده‌های جدید برای نمودار
-  final OHLCV ohlcv1h;
-  final OHLCV ohlcv24h;
-  final double priceChangePercentage1w;
-  final double high24h;
-  final double low24h;
+  final OHLCV? ohlcv1h;
+  final OHLCV? ohlcv24h;
+  final double? priceChangePercentage1w;
+  final double? high24h;
+  final double? low24h;
 
   CryptoCoin({
     required this.id,

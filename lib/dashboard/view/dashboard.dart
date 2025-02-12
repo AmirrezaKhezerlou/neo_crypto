@@ -90,24 +90,24 @@ class _DashboardPageState extends State<DashboardPage> {
                           ),
                         ),
 
-                          Row(
-                            children: [
-                              if (isDesktop)
-                              IconButton(
-                                onPressed: () async {
-                                  await WindowManager.instance.minimize();
-                                },
-                                icon: const Icon(Icons.minimize, color: Colors.white, size: 20),
-                              ),
-                              const SizedBox(width: 15),
-                              IconButton(
-                                onPressed: () {
-                                  controller.showExitDialog(context);
-                                },
-                                icon: const Icon(Icons.close, color: Colors.white, size: 20),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     if (isDesktop)
+                          //     IconButton(
+                          //       onPressed: () async {
+                          //         await WindowManager.instance.minimize();
+                          //       },
+                          //       icon: const Icon(Icons.minimize, color: Colors.white, size: 20),
+                          //     ),
+                          //     const SizedBox(width: 15),
+                          //     IconButton(
+                          //       onPressed: () {
+                          //         controller.showExitDialog(context);
+                          //       },
+                          //       icon: const Icon(Icons.close, color: Colors.white, size: 20),
+                          //     ),
+                          //   ],
+                          // ),
                       ],
                     ),
                     Expanded(
